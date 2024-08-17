@@ -1,0 +1,124 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% tailwind_css %}
+    {% load static %}
+    <title>{{product.title}}</title>
+</head>
+<body class="bg-gradient-to-r from-slate-50 to-gray-50 flex flex-col items-center justify-center">
+   {% include "components/navbar.html" %}
+    <div class="w-screen px-10 py-16 flex flex-row gap-10">
+      <div class="w-1/2 flex flex-row gap-4">
+         <div class=" w-24">
+
+         </div>
+         <div class=" w-96 h-96 rounded-2xl">
+            <img src="{{product.image.url}}" alt="" class=" w-fit">
+
+         </div>
+        
+      </div>
+      <div class=" w-1/2">
+         <div>
+            <h1 class="text-4xl font-sans font-extrabold">US ${{product.price}}</h1>
+            <p class="text-gray-700 font-sans">price shown before taxes</p>
+         </div>
+         <div class="pt-10">
+            <h2 class=" text-red-700 font-bold">{{product.title}}</h2>
+            <p class="font-sans">{{product.description}}</p>
+         </div>
+         <div class="pt-10">
+            <h1 class="text-red-700">Select variant :</h1>
+            <div class="flex flex-row space-x-4">
+    <!-- First color option -->
+        <div>
+        <input type="radio" name="color" id="color1" class="hidden peer">
+        <label for="color1" class="w-12 h-12 cursor-pointer border-2 border-transparent peer-checked:brightness-75">
+            <img class="w-11 h-11" src="{{ product.image.url }}" alt="Variant1">
+        </label>
+    </div>
+
+    <!-- Second color option -->
+    <div>
+        <input type="radio" name="color" id="color2" class="hidden peer">
+        <label for="color2" class="w-12 h-12 cursor-pointer border-2 border-transparent peer-checked:brightness-75">
+            <img class="w-11 h-11" src="{{ product.image.url }}" alt="Variant2">
+        </label>
+    </div>
+
+    <!-- Third color option -->
+    <div>
+        <input type="radio" name="color" id="color3" class="hidden peer">
+        <label for="color3" class="w-12 h-12 cursor-pointer border border-transparent peer-checked:brightness-75">
+            <img class="w-11 h-11 " src="{{ product.image.url }}" alt="Variant3">
+        </label>
+    </div>
+   
+    </div>
+       </div>
+
+       <div>
+        <button id="buyButton" class=" w-32 h-11 rounded-lg bg-green-700 text-white">buy now</button>
+      </div>
+
+      </div>
+    </div>
+   
+    <div id="popupModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+      <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+          <h2 class="text-xl font-semibold mb-4">Enter Purchase Information</h2>
+          
+          <!-- Purchase Form -->
+          <form action="" method="post">
+              {% csrf_token %}
+              <div class="mb-4">
+                  <label for="name" class="block text-black font-sans">Full Name:</label>
+                  <input type="text" id="name" name="name" class="w-full px-3 py-2 border rounded" required>
+              </div>
+              <div class="mb-4">
+                  <label for="Number" class="block text-black font-sans">Phone Number</label>
+                  <input type="number" id="Number" name="Number" class="w-full px-3 py-2 border rounded" required maxlength="10" minlength="10">
+              </div>
+              <div class="mb-4">
+                  <label for="address" class="block text-black font-sans">Shipping Address:</label>
+                  <textarea id="address" name="address" class="w-full px-3 py-2 border rounded" required></textarea>
+              </div>
+              <div class="flex flex-row gap-2">
+                 <h1>Total price : </h1> <h2 class="text-red-700">US ${{product.price}}</h2>
+              </div>
+              <div class="flex justify-end">
+                  <button type="button" id="cancelButton" class="mr-4 px-4 py-2 text-gray-600">Cancel</button>
+                  <button type="submit" class="bg-green-700 text-white px-4 py-2 rounded">Confirm Purchase</button>
+              </div>
+          </form>
+      </div>
+  </div>
+  <script>
+   document.addEventListener('DOMContentLoaded', function () {
+      const buyButton = document.getElementById('buyButton');
+      const popupModal = document.getElementById('popupModal');
+      const cancelButton = document.getElementById('cancelButton');
+  
+      // Show the popup when "Buy" button is clicked
+      buyButton.addEventListener('click', function () {
+          popupModal.classList.remove('hidden');
+      });
+  
+      // Hide the popup when "Cancel" button is clicked
+      cancelButton.addEventListener('click', function () {
+          popupModal.classList.add('hidden');
+      });
+  
+      // Optional: Close the popup when clicking outside the modal
+      window.addEventListener('click', function (event) {
+          if (event.target === popupModal) {
+              popupModal.classList.add('hidden');
+          }
+      });
+  });
+  </script>
+</body>
+</html>

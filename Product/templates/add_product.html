@@ -1,0 +1,48 @@
+<!-- templates/home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Home - My Site{% endblock %}
+
+{% block content %}
+    {% include "components/navbar.html" %}
+    <div class="py-14 flex flex-col items-center">
+        <h1 class="text-4xl font-sans">Add a Product</h1>
+    </div>
+    <div class="flex items-center justify-center mb-14">
+    <div class="bg-white rounded-xl flex w-fit justify-center border shadow-xl">
+        <form action="" method="post" class="flex flex-col gap-4 justify-center my-10 mx-10">
+            {% csrf_token %}
+            <div class="mb-4 flex justify-between">
+                <label for="title" class="left-0">Title :</label>
+                <input type="text" placeholder="Title" id="title" class="rounded-xl w-60 h-9 mx-10 text-center font-sans border">
+            </div>
+            <div class="mb-4 flex justify-between">
+                <label for="description" class="">Description :</label>
+                <textarea name="description" id="description" class="font-sans text-center border rounded-xl w-60 mx-10" placeholder="Description"></textarea>
+            </div>
+            <div class="mb-4 flex justify-between">
+                <label for="price">Price :</label>
+                <input type="number" placeholder="Price" id="price" class=" rounded-xl w-60 h-9 mx-10 text-center border font-sans">
+            </div>
+            <div class="mb-4 flex justify-between">
+                <label for="image">Image :</label>
+                <input type="file" name="image" id="image" class="mx-10">
+            </div>
+                       
+           <div>
+            <label for="">Category :</label>
+            <select name="cat" id="language" class="w-60">
+                {% for category in categories %}
+                <option value="{{category.name}}" class="font-sans">{{category.name}}</option>
+                {% endfor %}
+              </select>
+           </div>
+           
+            <button type="submit" class=" w-24 h-11 border rounded-xl border-black text-center">Save</button> 
+           
+            
+            
+        </form>
+    </div>
+</div>
+{% endblock %}

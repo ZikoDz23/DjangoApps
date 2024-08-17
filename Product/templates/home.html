@@ -1,0 +1,79 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% tailwind_css %}
+    {% load static %}
+    <title>ecom</title>
+</head>
+<body class="bg-gradient-to-r from-slate-50 to-gray-50">
+  {% include "components/navbar.html" %}
+  
+    
+    <div class="flex flex-row justify-center items-center">
+  
+    <div class="flex flex-col py-20 gap-10">
+      <div class="flex flex-row justify-center items-center gap-6">
+        <div class="flex flex-col justify-center items-center">
+          <h1 class=" text-5xl text-orange-700">MarketPlace</h1>
+          <p class="text-center">More choices, more safety, <br>
+          more fast</p>
+        </div>
+      <div class="w-60 h-60">
+        <img src="../media/technology-png-png-file-name-technology-536.png" alt="">
+      </div>
+    </div>
+      
+      <div class="mx-10 flex items-center">
+        
+        <ul class="flex flex-wrap gap-10 items-center justify-center">
+          <li class=""><a href="" class="hover:brightness-75">
+            <div class="bg-white w-80 h-80 border rounded-lg gap-3 flex flex-col items-center shadow-xl">
+            <div class="flex justify-center h-60">
+              <img src="../media/technology-png-png-file-name-technology-536.png" alt="">
+            </div>
+            <div>
+              <h1 class="text-center">DIGITAL PRODUCTS</h1>
+              <p class=" font-sans text-center">gift cards, games key, memberships ...</p>
+            </div>
+            </div>
+          </a>
+          </li>
+          <li > <a href="" class="hover:brightness-75">
+            <div class="bg-white w-80 h-80 border rounded-lg gap-3 flex flex-col items-center shadow-xl">
+            <div class="flex justify-center h-60">
+              <img src="../media/iohone-15.png" alt="">
+            </div>
+            <div>
+              <h1 class="text-center">Phones and accesoires</h1>
+              <p class=" font-sans text-center">smartphones, earbods, cables and more...</p>
+            </div>
+            </div>
+          </a>
+          </li> 
+    
+          <li > <a href="" class="hover:brightness-75">
+            <div class="bg-white w-80 h-80 border rounded-lg gap-3 flex flex-col items-center shadow-xl justify-center">
+            <div class="flex justify-center h-60">
+              <img src="../media/205613-0.jpg" alt="">
+            </div>
+            <div>
+              <h1 class="text-center">PC and Computer pieces</h1>
+              <p class=" font-sans text-center">Laptops, pc parts, monitors, gpus and more...</p>
+            </div>
+            </div>
+          </a>
+          </li>          
+        </ul>
+
+      </div>
+
+    </div>
+  </div>
+  {% include "components/footer.html" %}
+
+ 
+</body>
+</html>

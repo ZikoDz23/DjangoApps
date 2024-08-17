@@ -1,0 +1,64 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% tailwind_css %}
+    {% load static %}
+    <title>{{category.name}}</title>
+</head>
+<body class="bg-gradient-to-r from-slate-50 to-gray-50">
+    {% include "components/navbar.html" %}
+    <div class="flex flex-col justify-center items-center gap-16">
+        <div class=" bg-white sticky w-screen h-auto border-b-2 mx-5 flex flex-row justify-between px-10">
+            <div class=" pt-10 mx-10 pb-5">
+                <h1 class="text-2xl font-sans">{{category.name}}({{product_count}})</h1>
+            </div>
+            <div class="sort-by  pt-10 pb-5 mx-10  relative group hover:block">
+                <span class="SortBy hover:text-red-700">Sort by</span>
+                <div id="popupModam" class="absolute right-0 w-48 h-auto bg-white rounded-lg shadow-lg hidden group-hover:block">
+                  <a href="?sort=price_asc" class="{% if sort_option == 'price_asc' %}font-bold text-red-700{% endif %} font-sans ml-2">Price (Low to High)</a> <br>
+                  <a href="?sort=price_desc" class="{% if sort_option == 'price_desc' %}font-bold text-red-700{% endif %} font-sans ml-2">Price (High to Low)</a>
+                </div>
+                </div>
+            
+        </div>
+        <div class="rounded-3xl w-auto h-auto items-center">
+            <ul class="flex flex-wrap gap-6 mt-10 mb-10 mx-10">
+                {% for product in products %}
+                <li class=" bg-white shadow-md rounded-xl w-56 h-auto flex flex-col gap-1 items-center hover:scale-105">
+                   <a href="/../../product/{{product.title}}/"> <div class="h-30 w-40 mt-2">
+                       <img class="h-auto w-auto rounded-lg" src={{product.image.url}}  alt="">
+                    </div>
+                    <div class=" pt-2">
+                        <h1>{{product.title}}</h1>
+                    </div>
+                    <p class="font-sans text-gray-600">Samsung</p>
+                    
+                    <h2 class="font-sans pb-3">{{product.price}} $</h2>
+                </a>
+                    
+                </li>
+                {% endfor %}
+            </ul>
+
+        </div>
+    </div>
+    {% include "components/footer.html" %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const dropdownButton = document.querySelector('.group button');
+          const dropdownMenu = document.querySelector('.group .absolute');
+    
+          dropdownButton.addEventListener('click', function () {
+              dropdownMenu.classList.toggle('hidden');
+          });
+      });
+
+      
+      </script>
+    
+</body>
+</html>
