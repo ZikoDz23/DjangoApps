@@ -9,69 +9,109 @@
     <title>ecom</title>
 </head>
 <body class="bg-gradient-to-r from-slate-50 to-gray-50">
-  {% include "components/navbar.html" %}
-  
-    
-    <div class="flex flex-row justify-center items-center">
-  
-    <div class="flex flex-col py-20 gap-10">
-      <div class="flex flex-row justify-center items-center gap-6">
-        <div class="flex flex-col justify-center items-center">
-          <h1 class=" text-5xl text-orange-700">MarketPlace</h1>
-          <p class="text-center">More choices, more safety, <br>
-          more fast</p>
+    <nav class="top-0 sticky z-50 backdrop-blur-lg px-4 md:px-10 py-2 md:py-3 flex justify-between">
+        <div class="flex">
+            <a href="{% url "home" %}"> <h1 class="text-black text-xl font-bold">MarketPlace</h1></a>
         </div>
-      <div class="w-60 h-60">
-        <img src="../media/technology-png-png-file-name-technology-536.png" alt="">
-      </div>
+        <div id="side-bar" class="md:hidden cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </div>
+      </nav>
+  <style>
+    .transition-transform {
+        transition: transform 0.3s ease-in-out;
+    }
+    .translate-x-0 {
+        transform: translateX(0);
+    }
+    .-translate-x-full {
+        transform: translateX(+100%);
+    }
+  </style>
+  <div id="sidebar" class="fixed top-0 right-0 w-64 h-full bg-white text-black p-5 z-50 transition-transform transform -translate-x-full">
+    <div class="flex flex-col gap-6">
+        <button id="close-sidebar" class="self-end text-lg font-bold cursor-pointer">&times;</button>
+        {% if user.is_authenticated %}
+        <div class="flex flex-col gap-2 justify-center items-center border-b ">
+            <a href="../../profile/{{user.username}}/"><img src="{{profile.profile_picture.url}}" alt="" class="rounded-full border border-neutral-900 w-20 h-20"></a>
+            <a href="../../profile/{{user.username}}/" class="text-black text-lg text-center">{{user.username}}</a>
+        </div>
+        {% else %}
+        <div class="flex flex-col gap-2 justify-center items-center border-b ">
+            <img src="media/avatar.png" alt="" class="rounded-full border border-neutral-900 w-20 h-20">
+            <a href="" class="text-black text-lg text-center">Login</a>
+        </div>
+        {% endif %}
+
+        <div class=" mt-5">
+        <ul class="flex flex-col gap-5">
+          <li class="hover:text-orange-700">Categories</li>
+          <li class="hover:text-orange-700">Brands</li>
+          <li class="hover:text-orange-700"> <a href="{% url "add_product" %}">add a product</a></li>
+      </ul>
     </div>
-      
-      <div class="mx-10 flex items-center">
+    <div class="end-0">
+        <form action="{% url "logout" %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="border border-black text-black rounded-xl px-2 py-1">Logout</button>
+        </form>
         
-        <ul class="flex flex-wrap gap-10 items-center justify-center">
-          <li class=""><a href="" class="hover:brightness-75">
-            <div class="bg-white w-80 h-80 border rounded-lg gap-3 flex flex-col items-center shadow-xl">
-            <div class="flex justify-center h-60">
-              <img src="../media/technology-png-png-file-name-technology-536.png" alt="">
-            </div>
-            <div>
-              <h1 class="text-center">DIGITAL PRODUCTS</h1>
-              <p class=" font-sans text-center">gift cards, games key, memberships ...</p>
-            </div>
-            </div>
-          </a>
-          </li>
-          <li > <a href="" class="hover:brightness-75">
-            <div class="bg-white w-80 h-80 border rounded-lg gap-3 flex flex-col items-center shadow-xl">
-            <div class="flex justify-center h-60">
-              <img src="../media/iohone-15.png" alt="">
-            </div>
-            <div>
-              <h1 class="text-center">Phones and accesoires</h1>
-              <p class=" font-sans text-center">smartphones, earbods, cables and more...</p>
-            </div>
-            </div>
-          </a>
-          </li> 
-    
-          <li > <a href="" class="hover:brightness-75">
-            <div class="bg-white w-80 h-80 border rounded-lg gap-3 flex flex-col items-center shadow-xl justify-center">
-            <div class="flex justify-center h-60">
-              <img src="../media/205613-0.jpg" alt="">
-            </div>
-            <div>
-              <h1 class="text-center">PC and Computer pieces</h1>
-              <p class=" font-sans text-center">Laptops, pc parts, monitors, gpus and more...</p>
-            </div>
-            </div>
-          </a>
-          </li>          
-        </ul>
-
-      </div>
-
+    </div>
     </div>
   </div>
+  <script>
+    document.getElementById('side-bar').addEventListener('click', function() {
+        document.getElementById('sidebar').classList.remove('-translate-x-full');
+        document.getElementById('sidebar').classList.add('translate-x-0');
+    });
+  
+    document.getElementById('close-sidebar').addEventListener('click', function() {
+        document.getElementById('sidebar').classList.remove('translate-x-0');
+        document.getElementById('sidebar').classList.add('-translate-x-full');
+    });
+  </script>
+  
+    
+  <div class="flex flex-col md:flex-row justify-center items-center">
+    <div class="flex flex-col py-10 gap-5 md:py-20 md:gap-10">
+        <div class="flex flex-col justify-center items-center md:flex-row md:gap-6">
+            <div class="flex flex-col justify-center items-center text-center">
+                <h1 class="text-4xl md:text-5xl text-orange-700">MarketPlace</h1>
+                <p class="text-sm md:text-base">More choices, more safety, <br> more fast</p>
+            </div>
+            
+        </div>
+        
+        <div class="mx-5 md:mx-10 flex items-center">
+            <ul class="flex flex-wrap gap-5 md:gap-10 items-center justify-center">
+                <li>
+                    <a href="../category/Laptops/" class="hover:brightness-75">
+                        <div class="bg-white w-64 h-64 md:w-80 md:h-80 border rounded-lg gap-2 md:gap-3 flex flex-col items-center shadow-xl">
+                            <div class="flex justify-center h-48 md:h-60">
+                                <img src="../media/technology-png-png-file-name-technology-536.png" alt="">
+                            </div>
+                            <div>
+                                <h1 class="text-center text-sm md:text-base">Laptops</h1>
+                                <p class="font-sans text-center text-xs md:text-sm">Take a look on our Laptop collection</p>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="../category/Smartphones/" class="hover:brightness-75">
+                        <div class="bg-white w-64 h-64 md:w-80 md:h-80 border rounded-lg gap-2 md:gap-3 flex flex-col items-center shadow-xl">
+                            <div class="flex justify-center h-48 md:h-60">
+                                <img src="../media/iohone-15.png" alt="">
+                            </div>
+                            <div>
+                                <h1 class="text-center text-sm md:text-base">Smartphones</h1>
+                                <p class="font-sans text-center text-xs md:text-sm">Take a look on our Smartphones collection</p>
+                            </div>
+                            <div>
+            
+
   {% include "components/footer.html" %}
 
  

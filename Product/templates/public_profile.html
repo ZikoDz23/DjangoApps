@@ -1,0 +1,103 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% tailwind_css %}
+    {% load static %}
+    <title>{{user.username}}</title>
+</head>
+<body class="bg-gradient-to-r from-slate-50 to-gray-50">
+    <nav class="top-0 sticky z-50 backdrop-blur-lg px-4 md:px-10 py-2 md:py-3 flex justify-between">
+        <div class="flex">
+            <a href="{% url "home" %}"> <h1 class="text-black text-xl font-bold">MarketPlace</h1></a>
+        </div>
+        <div id="side-bar" class="md:hidden cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </div>
+      </nav>
+  <style>
+    .transition-transform {
+        transition: transform 0.3s ease-in-out;
+    }
+    .translate-x-0 {
+        transform: translateX(0);
+    }
+    .-translate-x-full {
+        transform: translateX(+100%);
+    }
+  </style>
+  <div id="sidebar" class="fixed top-0 right-0 w-64 h-full bg-white text-black p-5 z-50 transition-transform transform -translate-x-full">
+    <div class="flex flex-col gap-6">
+        <button id="close-sidebar" class="self-end text-lg font-bold cursor-pointer">&times;</button>
+        {% if user.is_authenticated %}
+        <div class="flex flex-col gap-2 justify-center items-center border-b ">
+            <a href="../../profile/{{user.username}}/"><img src="{{profile.profile_picture.url}}" alt="" class="rounded-full border border-neutral-900 w-20 h-20"></a>
+            <a href="../../profile/{{user.username}}/" class="text-black text-lg text-center">{{user.username}}</a>
+        </div>
+        {% else %}
+        <div class="flex flex-col gap-2 justify-center items-center border-b ">
+            <img src="media/avatar.png" alt="" class="rounded-full border border-neutral-900 w-20 h-20">
+            <a href="" class="text-black text-lg text-center">Login</a>
+        </div>
+        {% endif %}
+
+        <div class=" mt-5">
+        <ul class="flex flex-col gap-5">
+          <li class="hover:text-orange-700">Categories</li>
+          <li class="hover:text-orange-700">Brands</li>
+          <li class="hover:text-orange-700"> <a href="{% url "add_product" %}">add a product</a></li>
+      </ul>
+    </div>
+    <div class="end-0">
+        <form action="{% url "logout" %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="border border-black text-black rounded-xl px-2 py-1">Logout</button>
+        </form>
+        
+    </div>
+    </div>
+  </div>
+  <script>
+    document.getElementById('side-bar').addEventListener('click', function() {
+        document.getElementById('sidebar').classList.remove('-translate-x-full');
+        document.getElementById('sidebar').classList.add('translate-x-0');
+    });
+  
+    document.getElementById('close-sidebar').addEventListener('click', function() {
+        document.getElementById('sidebar').classList.remove('translate-x-0');
+        document.getElementById('sidebar').classList.add('-translate-x-full');
+    });
+  </script>
+    <div class=" mt-24 flex items-center justify-center flex-col">
+        <img src="{{profile.profile_picture.url}}" alt="" class=" w-40 rounded-full border-2 border-slate-500"> 
+        <a href="update/" class="font-sans text-lg text-slate-600">Update Profile Picture</a>
+        <h1 class="text-2xl font-bold">{{profile.user.username}}</h1>
+    </div>
+    <div class=" mt-10 pt-10 bg-white">
+        <ul class="flex flex-col md:flex-row md:flex-wrap justify-center items-center gap-6 mt-10 mb-10 mx-10">
+            {% for product in products %}
+            <li class=" bg-white shadow-lg shadow-neutral-400 rounded-xl w-56 h-auto flex flex-col gap-1 items-center hover:scale-105">
+               <a href="/../../product/{{product.title}}/"> <div class="h-30 w-40 mt-2">
+                   <img class="h-auto w-auto rounded-lg" src={{product.image.url}}  alt="">
+                </div>
+                <div class=" pt-2">
+                    <h1>{{product.title}}</h1>
+                </div>
+                <p class="font-sans text-gray-600">{{ product.user.username }}</p>
+                
+                <h2 class="font-sans pb-3">{{product.price}} $</h2>
+            </a>
+                
+            </li>
+            <a href="../../product/{{product.user.username}}/delete/{{product.id}}/" class=" px-2 py-1 border mt-2">delete</a>
+            {% endfor %}
+        </ul>
+
+    </div>
+    
+</body>
+</html>

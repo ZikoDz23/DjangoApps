@@ -1,48 +1,109 @@
-<!-- templates/home.html -->
-{% extends 'base.html' %}
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% tailwind_css %}
+    {% load static %}
+    <title>Add a product</title>
+</head>
+<body>
+    <nav class="top-0 sticky z-50 backdrop-blur-lg px-4 md:px-10 py-2 md:py-3 flex justify-between">
+        <div class="flex">
+            <a href="{% url "home" %}"> <h1 class="text-black text-xl font-bold">MarketPlace</h1></a>
+        </div>
+        <div id="side-bar" class="md:hidden cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </div>
+      </nav>
+  <style>
+    .transition-transform {
+        transition: transform 0.3s ease-in-out;
+    }
+    .translate-x-0 {
+        transform: translateX(0);
+    }
+    .-translate-x-full {
+        transform: translateX(+100%);
+    }
+  </style>
+  <div id="sidebar" class="fixed top-0 right-0 w-64 h-full bg-white text-black p-5 z-50 transition-transform transform -translate-x-full">
+    <div class="flex flex-col gap-6">
+        <button id="close-sidebar" class="self-end text-lg font-bold cursor-pointer">&times;</button>
+        {% if user.is_authenticated %}
+        <div class="flex flex-col gap-2 justify-center items-center border-b ">
+            <a href="../../profile/{{user.username}}/"><img src="{{profile.profile_picture.url}}" alt="" class="rounded-full border border-neutral-900 w-20 h-20"></a>
+            <a href="../../profile/{{user.username}}/" class="text-black text-lg text-center">{{user.username}}</a>
+        </div>
+        {% else %}
+        <div class="flex flex-col gap-2 justify-center items-center border-b ">
+            <img src="media/avatar.png" alt="" class="rounded-full border border-neutral-900 w-20 h-20">
+            <a href="" class="text-black text-lg text-center">Login</a>
+        </div>
+        {% endif %}
 
-{% block title %}Home - My Site{% endblock %}
-
-{% block content %}
-    {% include "components/navbar.html" %}
-    <div class="py-14 flex flex-col items-center">
-        <h1 class="text-4xl font-sans">Add a Product</h1>
+        <div class=" mt-5">
+        <ul class="flex flex-col gap-5">
+          <li class="hover:text-orange-700">Categories</li>
+          <li class="hover:text-orange-700">Brands</li>
+          <li class="hover:text-orange-700"> <a href="{% url "add_product" %}">add a product</a></li>
+      </ul>
     </div>
-    <div class="flex items-center justify-center mb-14">
-    <div class="bg-white rounded-xl flex w-fit justify-center border shadow-xl">
-        <form action="" method="post" class="flex flex-col gap-4 justify-center my-10 mx-10">
+    <div class="end-0">
+        <form action="{% url "logout" %}" method="POST">
             {% csrf_token %}
-            <div class="mb-4 flex justify-between">
-                <label for="title" class="left-0">Title :</label>
-                <input type="text" placeholder="Title" id="title" class="rounded-xl w-60 h-9 mx-10 text-center font-sans border">
-            </div>
-            <div class="mb-4 flex justify-between">
-                <label for="description" class="">Description :</label>
-                <textarea name="description" id="description" class="font-sans text-center border rounded-xl w-60 mx-10" placeholder="Description"></textarea>
-            </div>
-            <div class="mb-4 flex justify-between">
-                <label for="price">Price :</label>
-                <input type="number" placeholder="Price" id="price" class=" rounded-xl w-60 h-9 mx-10 text-center border font-sans">
-            </div>
-            <div class="mb-4 flex justify-between">
-                <label for="image">Image :</label>
-                <input type="file" name="image" id="image" class="mx-10">
-            </div>
-                       
-           <div>
-            <label for="">Category :</label>
-            <select name="cat" id="language" class="w-60">
+            <button type="submit" class="border border-black text-black rounded-xl px-2 py-1">Logout</button>
+        </form>
+        
+    </div>
+    </div>
+  </div>
+  <script>
+    document.getElementById('side-bar').addEventListener('click', function() {
+        document.getElementById('sidebar').classList.remove('-translate-x-full');
+        document.getElementById('sidebar').classList.add('translate-x-0');
+    });
+  
+    document.getElementById('close-sidebar').addEventListener('click', function() {
+        document.getElementById('sidebar').classList.remove('translate-x-0');
+        document.getElementById('sidebar').classList.add('-translate-x-full');
+    });
+  </script>
+    <h1 class="text-xl text-center border-b mt-20">Add a product</h1>
+    <form action="{% url 'add_product' %}" enctype="multipart/form-data" method="POST" class="flex flex-col gap-7 my-10 ">
+        {% csrf_token %}
+        <div class="mx-10 flex justify-between">
+            <label for="title">Title : </label>
+            <input type="text" id="title" name="title" placeholder="Title" class="w-40 h-8 rounded-lg border-2 border-black text-center">
+        </div>
+        <div class="mx-10 flex justify-between">
+            <label for="price">Price : </label>
+            <input type="number" id="price" name="price" placeholder="Price" class="w-40 h-8 rounded-lg border-2 border-black text-center">
+        </div>
+        <div class="mx-10 flex justify-between">
+            <label for="description">Description : </label>
+            <textarea name="description" id="description" placeholder="Description" class=" placeholder:text-center w-40 h-24 rounded-lg border-2 border-black"></textarea>
+        </div>
+        <div class="mx-10 flex justify-between">
+            <label for="cat">Category : </label>
+            <select name="cat" id="cat" class="w-40">
                 {% for category in categories %}
                 <option value="{{category.name}}" class="font-sans">{{category.name}}</option>
                 {% endfor %}
-              </select>
-           </div>
-           
-            <button type="submit" class=" w-24 h-11 border rounded-xl border-black text-center">Save</button> 
-           
-            
-            
-        </form>
-    </div>
-</div>
-{% endblock %}
+            </select>
+        </div>
+        <div class="mx-10 flex justify-between">
+            <label for="image">Image :</label>
+            <input type="file" name="image" id="image" class=" w-36">
+        </div>
+        
+        <button type="submit" class="w-36 h-7 mx-10 rounded-xl bg-blue-600 text-white flex items-center justify-center">Save</button>
+        
+        
+    </form>
+    
+</body>
+</html>
